@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Skyline RP — Site Officiel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0e1621;color:#fff}
+    header{background:#0b5cff;padding:20px;text-align:center}
+    nav{display:flex;justify-content:center;gap:15px;background:#0a1e3f;padding:10px}
+    nav button{background:#1fa2ff;border:none;padding:10px 15px;border-radius:6px;color:#fff;cursor:pointer;font-weight:bold}
+    nav button:hover{background:#1486d8}
+    section{display:none;padding:25px;max-width:900px;margin:auto}
+    section.active{display:block}
+    h2{color:#1fa2ff}
+    .card{background:#13233f;padding:15px;border-radius:10px;margin-bottom:15px}
+    input,textarea,select{width:100%;padding:10px;border-radius:6px;border:none;margin-top:5px;margin-bottom:10px}
+    .btn{background:#1fa2ff;border:none;padding:10px 15px;border-radius:6px;color:#fff;font-weight:bold;cursor:pointer}
+    .btn:hover{background:#1486d8}
+    footer{text-align:center;padding:15px;background:#0a1e3f;margin-top:30px;font-size:14px}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌆 Skyline RP</h1>
+  <p>Site officiel du serveur Discord Skyline RP</p>
+</header>
+
+<nav>
+  <button onclick="show('home')">Accueil</button>
+  <button onclick="show('reglement')">Règlement</button>
+  <button onclick="show('avis')">Avis</button>
+  <button onclick="show('staff')">Staff</button>
+  <button onclick="show('admin')">Espace Modération</button>
+</nav>
+
+<section id="home" class="active">
+  <h2>🏙️ Bienvenue sur Skyline RP</h2>
+  <div class="card">
+    Skyline RP est un serveur **RolePlay sérieux**, immersif et respectueux.
+    <br><br>
+    🔹 RP réaliste
+    🔹 Staff actif
+    🔹 Communauté mature
+  </div>
+</section>
+
+<section id="reglement">
+  <h2>📜 Règlement Général & RP</h2>
+  <div class="card">
+    <h3>Règlement Communauté</h3>
+    1. Respect obligatoire entre tous les membres.<br>
+    2. Aucun propos insultant, raciste ou haineux.<br>
+    3. Spam, pub non autorisée = sanction.<br>
+    4. Pseudo correct obligatoire.<br>
+    5. Écoute du staff obligatoire.
+  </div>
+  <div class="card">
+    <h3>Règlement RP</h3>
+    1. No RP Fear interdit.<br>
+    2. No Meta Gaming.<br>
+    3. No Power Gaming.<br>
+    4. Respect du Fear RP.<br>
+    5. Scènes réalistes obligatoires.
+  </div>
+</section>
+
+<section id="avis">
+  <h2>⭐ Donner un avis</h2>
+  <div class="card">
+    <label>Pseudo</label>
+    <input id="pseudo" placeholder="Ton pseudo">
+    <label>Note</label>
+    <select id="note">
+      <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
+    </select>
+    <label>Avis</label>
+    <textarea id="message" placeholder="Ton avis sur le serveur"></textarea>
+    <button class="btn" onclick="addAvis()">Envoyer l'avis</button>
+  </div>
+</section>
+
+<section id="staff">
+  <h2>👮 Équipe Staff</h2>
+  <div class="card">👑 Fondateur : Skyline</div>
+  <div class="card">🛡️ Administrateurs</div>
+  <div class="card">🔧 Modérateurs</div>
+</section>
+
+<section id="admin">
+  <h2>🛡️ Avis visibles par la modération</h2>
+  <div id="avisList"></div>
+</section>
+
+<footer>
+  © 2026 — Skyline RP | Tous droits réservés
+</footer>
+
+<script>
+function show(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='admin') loadAvis();
+}
+
+function addAvis(){
+  const pseudo=document.getElementById('pseudo').value;
+  const note=document.getElementById('note').value;
+  const msg=document.getElementById('message').value;
+  if(!pseudo||!msg) return alert('Remplis tout');
+  const avis=JSON.parse(localStorage.getItem('avis')||'[]');
+  avis.push({pseudo,note,msg});
+  localStorage.setItem('avis',JSON.stringify(avis));
+  alert('Avis envoyé');
+  document.getElementById('pseudo').value='';
+  document.getElementById('message').value='';
+}
+
+function loadAvis(){
+  const avis=JSON.parse(localStorage.getItem('avis')||'[]');
+  const div=document.getElementById('avisList');
+  div.innerHTML='';
+  avis.forEach(a=>{
+    div.innerHTML+=`<div class='card'><b>${a.pseudo}</b> — ⭐ ${a.note}<br>${a.msg}</div>`;
+  });
+}
+</script>
+
+</body>
+</html>
